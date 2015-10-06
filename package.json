@@ -24,9 +24,12 @@
     "gulp-tslint": "^3.3.0-beta",
     "gulp-typescript": "^2.9.0",
     "merge2": "^0.3.6",
+    "q": "^1.4.1",
     "server-destroy": "^1.0.1",
     "tsd": "^0.6.4",
     "yargs": "^3.25.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "immutable": "^3.7.5"
+  }
 }
