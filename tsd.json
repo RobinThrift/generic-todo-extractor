@@ -4,5 +4,18 @@
   "ref": "master",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
-  "installed": {}
+  "installed": {
+    "q/Q.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "node/node.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "debug/debug.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "js-yaml/js-yaml.d.ts": {
+      "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    }
+  }
 }

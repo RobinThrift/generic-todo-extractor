@@ -42,6 +42,7 @@ gulp.task('compile', function() {
 });
 
 gulp.task('test', ['compile'], function() {
+    process.env.DEBUG = 'gte:*';
     var mocha = require('gulp-mocha');
     return gulp.src(config.paths.tests, {read: false})
         .pipe(mocha({

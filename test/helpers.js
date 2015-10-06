@@ -13,3 +13,7 @@ export function fixtureFiles(base, ...files) {
 
     return Q.all(proms);
 }
+
+export function fixtureFilePath(base, file) {
+    return join(__dirname, 'fixtures', base, file);
+}

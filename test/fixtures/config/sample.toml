@@ -1,0 +1,9 @@
+enabled = true
+files = ["src/**.ts"]
+
+[plugins]
+lines = true
+
+  [plugins.fancy-plugin]
+    config = "value"
+    other = 10
