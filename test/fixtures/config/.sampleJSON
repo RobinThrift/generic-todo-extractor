@@ -1,0 +1,12 @@
+# json
+{
+    "enabled": true,
+    "files": ["src/**.ts"],
+    "plugins": {
+        "lines": true,
+        "fancy-plugin": {
+            "config": "value",
+            "other": 10
+        }
+    }
+}

@@ -3,7 +3,9 @@ import {fixtureFilePath} from './helpers';
 import {loadConfig} from '../dist/configLoader';
 
 suite('GTE - Config Loader', () => {
-    var jsonPath, tomlPath, yamlPath, expected;
+    var jsonPath, tomlPath, yamlPath, 
+        dotJSONPath, dotTomlPath, dotYamlPath,
+        expected;
 
     suiteSetup(() => {
         expected = {
@@ -17,26 +19,45 @@ suite('GTE - Config Loader', () => {
                 }
             }
         };
-        jsonPath = fixtureFilePath('config', 'sample.json');
-        tomlPath = fixtureFilePath('config', 'sample.toml');
-        yamlPath = fixtureFilePath('config', 'sample.yml');
+        jsonPath    = fixtureFilePath('config', 'sample.json');
+        dotJSONPath = fixtureFilePath('config', '.sampleJSON');
+        tomlPath    = fixtureFilePath('config', 'sample.toml');
+        dotTomlPath = fixtureFilePath('config', '.sampleTOML');
+        yamlPath    = fixtureFilePath('config', 'sample.yml');
+        dotYamlPath = fixtureFilePath('config', '.sampleYAML');
     });
 
-    test('json', (done) => {
+    test('json extension', (done) => {
         loadConfig(jsonPath)
             .done((config) => {
                 expect(config).to.deep.equal(expected);
                 done();
             }, done);
     });
-    test('toml', (done) => {
+    test('json file header', (done) => {
+        loadConfig(dotJSONPath)
+            .done((config) => {
+                expect(config).to.deep.equal(expected);
+                done();
+            }, done);
+    });
+
+    test('toml extension', (done) => {
         loadConfig(tomlPath)
             .done((config) => {
                 expect(config).to.deep.equal(expected);
                 done();
             }, done);
     });
-    test('yaml', (done) => {
+    test('toml file header', (done) => {
+        loadConfig(dotTomlPath)
+            .done((config) => {
+                expect(config).to.deep.equal(expected);
+                done();
+            }, done);
+    });
+
+    test('yaml extension', (done) => {
         loadConfig(yamlPath)
             .done((config) => {
                 expect(config).to.deep.equal(expected);

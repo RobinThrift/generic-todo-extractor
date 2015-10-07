@@ -9,8 +9,8 @@ var rf = nfbind(readFile);
 
 
 //@feat(config): add support for file type header
-const ENDING = /\.(.*)$/
-function getFileEnding(path): string {
+const ENDING = /[\w\-]+\.(.+)$/;
+function fileExtension(path: string): string {
     let match = ENDING.exec(path);
     if (match) {
         return match[1].toLowerCase();
@@ -19,55 +19,98 @@ function getFileEnding(path): string {
     }
 }
 
+const FILE_TYPE_HEADER = /^#\s*([a-z]+)\n/i;
+function fileHeader(contents: string): string {
+    let match = FILE_TYPE_HEADER.exec(contents);
+    if (match) {
+        return match[1].toLowerCase();
+    } else {
+        return '';
+    }
+}
+
+function fileType(path: string, contents: string): string {
+    let ftype = fileExtension(path);
+    if (!ftype) {
+        ftype = fileHeader(contents);
+    }
+    return ftype;
+}
+
 function loadFile(path: string) {
     return rf(path, 'utf8');
 }
 
-function loadJSON(contents: string, resolve: Function, reject: Function) {
-    try {
-        resolve(JSON.parse(contents));
-    } catch (e) {
-        reject(e);
-    }
+type ParseResult = {
+    value?: string,
+    error?: Error
 }
 
-///<reference path='./toml.ts'/>
-import toml = require('toml');
-function loadToml(contents: string, resolve: Function, reject: Function) {
+function loadJSON(contents: string): ParseResult {
+    var res = {value: null, error: null};
     try {
-        resolve(toml.parse(contents));
+        res.value = JSON.parse(contents);
     } catch (e) {
-        reject(e);
+        res.error = e;
     }
+    return res;
+}
+
+///<reference path='./toml.d.ts'/>
+import toml = require('toml');
+function loadToml(contents: string): ParseResult {
+    var res = {value: undefined, error: null};
+    try {
+        res.value = toml.parse(contents);
+    } catch (e) {
+        res.error = e;
+    }
+    return res;
 }
 
 import {safeLoad} from 'js-yaml';
-function loadYaml(contents: string, resolve: Function, reject: Function) {
+function loadYaml(contents: string): ParseResult {
+    var res = {value: undefined, error: null};
     try {
-        resolve(safeLoad(contents));
+       res.value = safeLoad(contents);
     } catch (e) {
-        reject(e);
+        res.error = e;
     }
+    return res;
 }
 
+function parseFile(ending: string, contents: string): ParseResult {
+    contents = contents.replace(FILE_TYPE_HEADER, '');
+    switch (ending) {
+        case 'json':
+            return loadJSON(contents as string);
+            break;
+        case 'toml':
+            return loadToml(contents as string);
+            break;
+        case 'yaml':
+        case 'yml':
+            return loadYaml(contents as string);
+            break;
+        default:
+            return new Error('Config Format not supported');
+    }
+}
 
 export function loadConfig(path) {
     return Promise((resolve, reject) => {
         loadFile(path)
             .then((contents) => {
-                switch (getFileEnding(path)) {
-                    case 'json':
-                        loadJSON(contents as string, resolve, reject);
-                        break;
-                    case 'toml':
-                        loadToml(contents as string, resolve, reject);
-                        break;
-                    case 'yaml':
-                    case 'yml':
-                        loadYaml(contents as string, resolve, reject);
-                        break;
-                    default:
-                        reject(new Error('Config Format not supported'));
+                let ftype = fileType(path, contents as string);
+                if (!ftype) {
+                    return reject(new Error('Can\'t determine file type'));
+                } else {
+                    let {value, error} = parseFile(ftype, contents as string);
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(value);
+                    }
                 }
             }, reject);
     });
