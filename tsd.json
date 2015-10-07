@@ -16,6 +16,9 @@
     },
     "js-yaml/js-yaml.d.ts": {
       "commit": "a6732bf1c03fd285bb01641b3a5a0129147cdb5b"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "66f88ec51858bb21bc375fa91a963c04bc09401e"
     }
   }
 }

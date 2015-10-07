@@ -12,13 +12,14 @@ suite('GTE - Config Loader', () => {
             enabled: true,
             files: ["src/**.ts"],
             plugins: {
-                lines: true,
+                lines: {},
                 "fancy-plugin": {
                     config: "value",
                     other: 10
                 }
             }
         };
+
         jsonPath    = fixtureFilePath('config', 'sample.json');
         dotJSONPath = fixtureFilePath('config', '.sampleJSON');
         tomlPath    = fixtureFilePath('config', 'sample.toml');
@@ -30,14 +31,16 @@ suite('GTE - Config Loader', () => {
     test('json extension', (done) => {
         loadConfig(jsonPath)
             .done((config) => {
-                expect(config).to.deep.equal(expected);
+                config.plugins = config.plugins.toJS();
+                expect(config).to.deep.contain.keys(expected);
                 done();
             }, done);
     });
     test('json file header', (done) => {
         loadConfig(dotJSONPath)
             .done((config) => {
-                expect(config).to.deep.equal(expected);
+                config.plugins = config.plugins.toJS();
+                expect(config).to.deep.contain.keys(expected);
                 done();
             }, done);
     });
@@ -45,14 +48,16 @@ suite('GTE - Config Loader', () => {
     test('toml extension', (done) => {
         loadConfig(tomlPath)
             .done((config) => {
-                expect(config).to.deep.equal(expected);
+                config.plugins = config.plugins.toJS();
+                expect(config).to.deep.contain.keys(expected);
                 done();
             }, done);
     });
     test('toml file header', (done) => {
         loadConfig(dotTomlPath)
             .done((config) => {
-                expect(config).to.deep.equal(expected);
+                config.plugins = config.plugins.toJS();
+                expect(config).to.deep.contain.keys(expected);
                 done();
             }, done);
     });
@@ -60,7 +65,8 @@ suite('GTE - Config Loader', () => {
     test('yaml extension', (done) => {
         loadConfig(yamlPath)
             .done((config) => {
-                expect(config).to.deep.equal(expected);
+                config.plugins = config.plugins.toJS();
+                expect(config).to.deep.contain.keys(expected);
                 done();
             }, done);
     });

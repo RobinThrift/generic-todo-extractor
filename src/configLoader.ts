@@ -7,6 +7,12 @@ import {Promise, nfbind} from 'q';
 import {readFile} from 'fs';
 var rf = nfbind(readFile);
 
+import {Map} from 'immutable';
+export type Config = {
+    enabled: boolean,
+    files: string[],
+    plugins: Map<string, Object>
+}
 
 //@feat(config): add support for file type header
 const ENDING = /[\w\-]+\.(.+)$/;
@@ -97,6 +103,31 @@ function parseFile(ending: string, contents: string): ParseResult {
     }
 }
 
+
+const DEFAULTS: Config = {
+    enabled: true,
+    files: [],
+    plugins: Map<string, Object>()
+};
+
+import {forEach, reduce, clone} from 'lodash';
+function sanitizeConfig(dirty): Config {
+    let clean: Config = clone(DEFAULTS);
+    forEach(dirty, (value, key) => {
+        if (key === 'plugins') {
+            clean.plugins = reduce(dirty.plugins, (plugins, config, name) => {
+                if (typeof config === 'boolean') {
+                    config = {};
+                }
+                return plugins.set(name, config);
+            }, clean.plugins);
+        } else {
+            clean[key] = value;
+        }
+    });
+    return clean;
+}
+
 export function loadConfig(path) {
     return Promise((resolve, reject) => {
         loadFile(path)
@@ -109,7 +140,7 @@ export function loadConfig(path) {
                     if (error) {
                         reject(error);
                     } else {
-                        resolve(value);
+                        resolve(sanitizeConfig(value));
                     }
                 }
             }, reject);
