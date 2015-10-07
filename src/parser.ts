@@ -16,7 +16,7 @@ export type Tag = {
     body: string
 }
 
-const PATTERN = /\/\/\s*@([\S]+?)(?:\(([\s\S]+?)\))?:\s*([\S\s]*?)$/i;
+const PATTERN = /(?:\/\/|\s*\*)\s*@([\S]+?)(?:\(([\s\S]+?)\))?(?::|\s)\s*([\S\s]*?)$/i;
 export function findTag(line: string): InterimTag {
     let matches = PATTERN.exec(line);
     if (!matches) {

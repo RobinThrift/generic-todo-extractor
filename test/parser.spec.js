@@ -9,7 +9,12 @@ suite('GTE - Parser', () => {
         let tagA = findTag('@GET("/users") // @fix(getAll): fix the url'),
             tagB = findTag('//@feat(getById|lines:+10): Add a method that gets a user by id'),
             tagC = findTag('//@fix: this is a bit hacky'),
-            tagD = findTag('class UserService extends HTTPService {');
+            tagD = findTag('class UserService extends HTTPService {'),
+            tagE = findTag('//@fix this is a bit hacky'),
+            tagF = findTag('//@fix(scope) this is a bit hacky'),
+            tagG = findTag('* @refactor(everything|lines:+30): because mark wrote it'),
+            tagH = findTag(' * @fix: mark breaks everything');
+
 
         expect(tagA).to.deep.equal({
             tagName: 'fix',
@@ -30,6 +35,30 @@ suite('GTE - Parser', () => {
             paramString: ''
         });
         expect(tagD).to.be.undefined;
+        expect(tagE).to.deep.equal({
+            tagName: 'fix',
+            scope: '',
+            body: 'this is a bit hacky',
+            paramString: ''
+        });
+        expect(tagF).to.deep.equal({
+            tagName: 'fix',
+            scope: 'scope',
+            body: 'this is a bit hacky',
+            paramString: ''
+        });
+        expect(tagG).to.deep.equal({
+            tagName: 'refactor',
+            scope: 'everything',
+            body: 'because mark wrote it',
+            paramString: 'lines:+30'
+        });
+        expect(tagH).to.deep.equal({
+            tagName: 'fix',
+            scope: '',
+            body: 'mark breaks everything',
+            paramString: ''
+        });
     });
 
     test('paramsFromString', () => {
