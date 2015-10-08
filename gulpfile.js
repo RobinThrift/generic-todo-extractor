@@ -11,6 +11,7 @@ var yargs = require('yargs'),
     },
     args = yargs
             .default('only', undefined)
+            .default('with-debug', false)
             .argv;
 
 gulp.task('lint', function() {
@@ -42,7 +43,9 @@ gulp.task('compile', function() {
 });
 
 gulp.task('test', ['compile'], function() {
-    process.env.DEBUG = 'gte:*';
+    if (args.withDebug) {
+        process.env.DEBUG = 'gte:*';
+    }
     var mocha = require('gulp-mocha');
     return gulp.src(config.paths.tests, {read: false})
         .pipe(mocha({
