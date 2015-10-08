@@ -1,0 +1,9 @@
+{
+    "target": "es3",
+    "moduleResolution": "node",
+    "module": "umd",
+    "declaration": true,
+    "files": [
+        "src/*.ts"
+    ]
+}
