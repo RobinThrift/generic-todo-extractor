@@ -1,8 +1,12 @@
 {
-    "target": "es3",
-    "moduleResolution": "node",
-    "module": "umd",
-    "declaration": true,
+    "compilerOptions": {
+        "target": "es3",
+        "moduleResolution": "node",
+        "module": "umd",
+        "declaration": true,
+        "out": "dist/*.js",
+        "sourceMap": true
+    },
     "files": [
         "src/*.ts"
     ]
