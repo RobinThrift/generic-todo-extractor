@@ -1,7 +1,7 @@
 ///<reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
 ///<reference path='../typings/tsd.d.ts'/>
 import * as debug from 'debug';
-var d = debug('gte:conigLoader');
+var d = debug('grumpf:conigLoader');
 
 import {Promise, nfbind} from 'q';
 import {readFile} from 'fs';

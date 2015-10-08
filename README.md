@@ -1,4 +1,4 @@
-# Generic Todo Extractor
+# Grumpf the Generic Todo Extractor
 [![Build Status](https://travis-ci.org/RobinThrift/generic-todo-extractor.svg)](https://travis-ci.org/RobinThrift/generic-todo-extractor)
 
 ## Git Commit Messages

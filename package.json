@@ -1,5 +1,5 @@
 {
-  "name": "generic-todo-extractor",
+  "name": "grumpf",
   "version": "1.0.0",
   "description": "Extracts //@generic tags in source code",
   "main": "dist/index.js",
@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:RobinThrift/generic-todo-extractor.git"
+    "url": "git@github.com:RobinThrift/grumpf.git"
   },
   "author": "Robin Thrift <thrift.d.robin@googlemail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RobinThrift/generic-todo-extractor/issues"
+    "url": "https://github.com/RobinThrift/grumpf/issues"
   },
-  "homepage": "https://github.com/RobinThrift/generic-todo-extractor",
+  "homepage": "https://github.com/RobinThrift/grumpf",
   "devDependencies": {
     "babel-core": "^5.8.25",
     "chai": "^3.2.0",

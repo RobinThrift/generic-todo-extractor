@@ -4,7 +4,7 @@ import {fixtureFiles} from './helpers';
 import {parse, findTag, paramsFromString} from '../dist/parser';
 import {Map} from 'immutable';
 
-suite('GTE - Parser', () => {
+suite('Grumpf - Parser', () => {
     test('findTag', () => {
         let tagA = findTag('@GET("/users") // @fix(getAll): fix the url'),
             tagB = findTag('//@feat(getById|lines:+10): Add a method that gets a user by id'),

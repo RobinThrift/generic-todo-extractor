@@ -2,7 +2,7 @@ import {expect} from 'chai';
 import {fixtureFilePath} from './helpers';
 import {loadConfig} from '../dist/configLoader';
 
-suite('GTE - Config Loader', () => {
+suite('Grumpf - Config Loader', () => {
     var jsonPath, tomlPath, yamlPath, 
         dotJSONPath, dotTomlPath, dotYamlPath,
         expected;
