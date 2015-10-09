@@ -1,4 +1,4 @@
-///<reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
+///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 ///<reference path='../typings/tsd.d.ts'/>
 import {Map} from 'immutable';
 import {Tag} from './parser';

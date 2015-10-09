@@ -1,4 +1,4 @@
-///<reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
+///<reference path='../node_modules/immutable/dist/immutable.d.ts'/>
 import {Map} from 'immutable';
 import * as debug from 'debug';
 import {Plugin} from './plugins';
