@@ -61,6 +61,16 @@ gulp.task('watch', function() {
     gulp.watch(config.paths.tests, ['lint', 'test']);;
 });
 
+gulp.task('changelog', function() {
+    var conventionalChangelog = require('gulp-conventional-changelog')
+    return gulp.src('CHANGELOG.md', {buffer: false})
+        .pipe(conventionalChangelog({
+            preset: 'atom',
+            append: true
+        }))
+        .pipe(gulp.dest('./'));
+});
+
 gulp.task('setup', function(done) {
     var exec = require('child_process').exec;
     exec(join(__dirname, 'node_modules/tsd/build/cli.js') + ' install', 
