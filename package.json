@@ -2,7 +2,7 @@
   "name": "grumpf",
   "version": "1.0.0",
   "description": "Extracts //@generic tags in source code",
-  "main": "dist/index.js",
+  "main": "dist/parser.js",
   "scripts": {
     "test": "gulp test"
   },
