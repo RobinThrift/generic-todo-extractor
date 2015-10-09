@@ -1,7 +1,7 @@
 
 import {expect} from 'chai';
 import {fixtureFiles} from './helpers';
-import {parse, findTag, paramsFromString} from '../dist/parser';
+import {parse, parseLine, findTag, paramsFromString} from '../dist/parser';
 import {Map} from 'immutable';
 
 suite('Grumpf - Parser', () => {
@@ -71,10 +71,10 @@ suite('Grumpf - Parser', () => {
         }))).to.be.true;
     });
 
-    test('parse', () => {
-        let tagA = parse('@GET("/users") // @fix(getAll): fix the url'),
-            tagB = parse('//@FEAT(getById|lines:+10): Add a method that gets a user by id'),
-            tagC = parse('//@FiX(getById|lines:+10,ln:30): this is all a big boo boo');
+    test('parseLine', () => {
+        let tagA = parseLine('@GET("/users") // @fix(getAll): fix the url'),
+            tagB = parseLine('//@FEAT(getById|lines:+10): Add a method that gets a user by id'),
+            tagC = parseLine('//@FiX(getById|lines:+10,ln:30): this is all a big boo boo');
 
         expect(tagA).to.deep.contain({
             tagName: 'fix',
@@ -94,5 +94,37 @@ suite('Grumpf - Parser', () => {
             body: 'this is all a big boo boo'
         });
         expect(tagC.params.get('ln')).to.equal('30');
+    });
+
+    test('parse', () => {
+        let tags = parse([
+                    '//@feat(getById|lines:+10): Add a method that gets a user by id',
+                    '@GET("/users") // @fix(getAll): fix the url',
+                    '//@fix: this is a bit hacky',
+                    '* @refactor(everything|lines:+30): because mark wrote it',
+                    'class Something extends SomethingElse {'
+                    ].join('\n'));
+
+        expect(tags.length).to.equal(4);
+    });
+
+    test('parse with plugins', () => {
+        let plugins = new Map({
+            transform: (tag, params, lines) => {
+                tag.tagName = tag.tagName.toUpperCase();
+                return tag;
+            },
+            meta: (tag, params, lines) => {
+                tag.meta.bar = lines[0].indexOf('/');
+                return tag;
+            }
+        });
+        let tags = parse(
+                        '//@feat(getById|lines:+10): Add a method that gets a user by id',
+                        plugins
+                    );
+
+        expect(tags[0].tagName).to.equal('FEAT');
+        expect(tags[0].meta.bar).to.equal(0);
     });
 });

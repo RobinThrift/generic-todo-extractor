@@ -4,9 +4,9 @@ import {Map} from 'immutable';
 import {Tag} from './parser';
 
 export interface Plugin {
-    (tag: Tag, params: Map<string, string>, lines: string[]): Tag
+    (tag: Tag, params: Map<string, string>, lines: string[]): Tag;
 }
 
 interface PluginContainer {
-    (config: Object): Plugin
+    (config: Object): Plugin;
 }

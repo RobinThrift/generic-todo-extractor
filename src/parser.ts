@@ -1,6 +1,8 @@
 ///<reference path='../node_modules/immutable/dist/Immutable.d.ts'/>
-
 import {Map} from 'immutable';
+import * as debug from 'debug';
+import {Plugin} from './plugins';
+let d = debug('grumpf:parser');
 
 export type InterimTag = {
     tagName: string,
@@ -13,7 +15,8 @@ export type Tag = {
     tagName: string,
     scope: string,
     params: Map<string, string>,
-    body: string
+    body: string,
+    meta: Object
 }
 
 const PATTERN = /(?:\/\/|\s*\*)\s*@([\S]+?)(?:\(([\s\S]+?)\))?(?::|\s)\s*([\S\s]*?)$/i;
@@ -52,12 +55,29 @@ export function paramsFromString(paramString: string): Map<string, string> {
     }
 }
 
-export function parse(line: string): Tag {
-    let {tagName, scope, paramString, body} = findTag(line);
-    return {
-        tagName,
-        scope,
-        body,
-        params: paramsFromString(paramString)
-    };
+export function parseLine(line: string, plugins = Map<string, Plugin>(), lines: string[]): Tag {
+    let analysis = findTag(line);
+    if (analysis) {
+        let {tagName, scope, paramString, body} = analysis;
+        let tag: Tag = {
+            tagName,
+            scope,
+            body,
+            params: paramsFromString(paramString),
+            meta: {}
+        };
+        return plugins.reduce((tag, plugin, name) => {
+            d(`applying plugin ${name} to ${tag}`);
+            return plugin(tag, tag.params, lines);
+        }, tag);
+    } else {
+        return null;
+    }
+}
+
+import {compact} from 'lodash';
+export function parse(code: string, plugins = Map<string, Plugin>()): Tag[] {
+    return compact(code.split('\n').map((line, i, lines) => {
+        return parseLine(line, plugins, lines);
+    }));
 }
