@@ -30,9 +30,9 @@ gulp.task('compile', function() {
 
     tsStream = gulp.src(config.paths.scripts)
         .pipe(tsc({
-            target: 'es3',
+            target: 'es5',
             moduleResolution: 'node',
-            module: 'umd',
+            module: 'commonjs',
             declaration: true
         }));
 
