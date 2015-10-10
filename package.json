@@ -1,6 +1,6 @@
 {
   "name": "grumpf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extracts //@generic tags in source code",
   "main": "dist/parser.js",
   "scripts": {
